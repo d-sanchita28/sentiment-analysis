@@ -16,7 +16,7 @@ from sklearn.ensemble import RandomForestClassifier
 from joblib import dump, load
 
 import constants
-from feature_extraction import feature_extraction
+import feature_extraction
 
 # contains mapping such as "don't" => "do not"
 appos = constants.appos
@@ -129,7 +129,7 @@ def get_model(nlp, ft_model):
 
 		features = feature_extraction(train_data, ft_model, nlp)
 
-		single_aspect_reviews = get_sigle_aspect_reviews(train_data, features=features)
+		single_aspect_reviews = get_single_aspect_reviews(train_data, features=features)
 		single_aspect_reviews['reviewText'] = single_aspect_reviews['reviewText'].apply(lambda x: postprocess(x, nlp))
 
 		X_train = single_aspect_reviews['reviewText']
@@ -167,3 +167,18 @@ def get_model(nlp, ft_model):
 
 		model = final_lr
 	return model
+# filepath: vscode-vfs://github/d-sanchita28/sentiment-analysis/project2/training.py
+if __name__ == "__main__":
+    import spacy
+    from feature_extraction import feature_extraction  # Ensure this import works
+
+    # Load SpaCy model
+    nlp = spacy.load("en_core_web_sm")
+
+    # Placeholder for your fastText model (replace with actual model if needed)
+    ft_model = None
+
+    # Call the get_model function to train the model
+    model = get_model(nlp, ft_model)
+
+    print("Model training completed.")
