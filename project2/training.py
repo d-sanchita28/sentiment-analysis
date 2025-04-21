@@ -76,7 +76,7 @@ def construct_spacy_obj(df, nlp):
 	
 	return df
 
-def get_sigle_aspect_reviews(*dfs, features):
+def get_single_aspect_reviews(*dfs, features):
 	#count reviews that talk about only one aspect
 	total_count = 0
 	reviews = []
@@ -157,11 +157,13 @@ def get_model(nlp, ft_model):
 
 		final_lr.fit(X_train, y_train)
 		# final_rf.fit(X_train, y_train)
+		print("Classification Report on Training Set:")
+		print(classification_report(y_train, final_lr.predict(X_train)))
+		os.makedirs("models", exist_ok=True)
 
 		dump(final_lr, 'models/model.joblib')
 		# dump(final_rf, 'models/model_rf.joblib')
 		# dump(tfidf, 'tfidf.joblib')
 
 		model = final_lr
-
 	return model
