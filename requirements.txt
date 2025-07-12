@@ -1,0 +1,8 @@
+spacy
+fasttext-wheel
+pandas
+numpy
+scikit-learn
+flask
+joblib
+pyspellchecker

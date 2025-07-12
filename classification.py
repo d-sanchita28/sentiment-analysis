@@ -72,4 +72,4 @@ def classify(df, features, model):
 	results_df = pd.DataFrame({'category': features, 'sentence': sentences, 'sentiment': sentiments})
 	no_cat_df = pd.DataFrame({'sentence': no_cat_sents})
 	more_than_one_df = pd.DataFrame({'sentences': more_than_one_sents})
-	
+	return results_df, no_cat_df, more_than_one_df

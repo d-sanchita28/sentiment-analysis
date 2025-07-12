@@ -1,19 +1,20 @@
 import spacy
-from spacy.pipeline import Sentencizer
+#from spacy.pipeline import Sentencizer
 import pandas as pd
 
 from preprocess import preprocess, construct_spacy_obj
 import ft
-import train
+import training
 from feature_extraction import feature_extraction
-from classifiation import classify
+from classification import classify
 
 nlp = spacy.load('en_core_web_sm')
-sentencizer = Sentencizer(punct_chars=[".", "!", "?", "\n", "\r", ";"])
-nlp.add_pipe(sentencizer)
-
+# sentencizer = Sentencizer(punct_chars=[".", "!", "?", "\n", "\r", ";"])
+# nlp.add_pipe(sentencizer)
+if "sentencizer" not in nlp.pipe_names:
+    nlp.add_pipe("sentencizer", config={"punct_chars": [".", "!", "?", "\n", "\r", ";"]})
 ft_model = ft.get_model()
-model = train.get_model(nlp, ft_model)
+model = training.get_model(nlp, ft_model)
 
 def get_features_and_classification(filename):
 	df = pd.read_csv("csv_files/" + filename, header=None, names=['reviewText', 'rating'])

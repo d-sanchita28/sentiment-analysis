@@ -2,7 +2,7 @@ import os
 import re
 import pandas as pd
 import numpy as np
-
+import ft
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
@@ -58,7 +58,7 @@ def preprocess(txt, nlp):
 
 def postprocess(x, nlp):
 	# removing stop words
-	with nlp.disable_pipes(['tagger', 'parser', 'ner', 'sentencizer']):
+	with nlp.disable_pipes(['tagger', 'parser', 'ner', 'senter']):
 		doc = nlp(x)
 	
 	words = [token.text for token in doc if token.text not in stopwords]
@@ -69,7 +69,7 @@ def postprocess(x, nlp):
 	return x
 
 def construct_spacy_obj(df, nlp):
-	with nlp.disable_pipes(['parser', 'ner', 'sentencizer']):
+	with nlp.disable_pipes(['parser', 'ner', 'senter']):
 		# constructing spacy object for each review
 		docs = list(nlp.pipe(df['reviewText']))
 		df['spacyObj'] = pd.Series(docs, index=df['reviewText'].index)
@@ -112,6 +112,7 @@ def giveRating(x):
 		return "Negative"
 
 def get_model(nlp, ft_model):
+	
 
 	if os.path.isfile('models/model.joblib'):
 		print("Trained model found. Using them.")
@@ -129,7 +130,7 @@ def get_model(nlp, ft_model):
 
 		features = feature_extraction(train_data, ft_model, nlp)
 
-		single_aspect_reviews = get_sigle_aspect_reviews(train_data, features=features)
+		single_aspect_reviews = get_single_aspect_reviews(train_data, features=features)
 		single_aspect_reviews['reviewText'] = single_aspect_reviews['reviewText'].apply(lambda x: postprocess(x, nlp))
 
 		X_train = single_aspect_reviews['reviewText']
@@ -167,3 +168,10 @@ def get_model(nlp, ft_model):
 
 		model = final_lr
 	return model
+
+if __name__ == "__main__":
+    import spacy
+    nlp = spacy.load("en_core_web_sm")  # or your custom model
+    ft_model = ft.get_model()   # or load your FastText model if needed
+
+    get_model(nlp, ft_model)
