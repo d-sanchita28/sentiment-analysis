@@ -16,7 +16,7 @@ from sklearn.ensemble import RandomForestClassifier
 from joblib import dump, load
 
 import constants
-from feature_extraction import feature_extraction
+import feature_extraction
 
 # contains mapping such as "don't" => "do not"
 appos = constants.appos
